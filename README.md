@@ -32,8 +32,8 @@ Some notes on usage:
 - `attribute` must be a valid identifier with a valid `value`.
 
 
-## Licence
-
+## License
+Apache - see [LICENSE](LICENSE)
 
 ## Developer docs
 
