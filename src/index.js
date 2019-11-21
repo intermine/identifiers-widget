@@ -46,7 +46,10 @@ function initComponent(options) {
       <h1>${identifier}</h1>
       <h2>Loading results...</h2>
       `;
-      host.innerHTML = header + "<div class='lds-ripple'><div></div><div></div></div>";
+      host.innerHTML = header + `
+      <div class='loader'>
+        <div class='lds-ripple'><div></div><div></div></div>
+      </div>`;
 
       //1. get identifiers.org details for our given identifier
       const identifiersInfo = await getIdentifiersOrgInfo(identifier);
