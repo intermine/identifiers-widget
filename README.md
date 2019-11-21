@@ -1,6 +1,6 @@
 #  Identifiers Widget
 
-FIXME: fill out a description of your tool here! :)
+Widget to load identifiers from identifiers.org and display embedded in your webpage.
 
 ## Component user docs: adding this component to your webpage
 
