@@ -33,7 +33,7 @@ Some notes on usage:
 
 
 ## Licence
-
+Apache - see [LICENCE](LICENCE)
 
 ## Developer docs
 
