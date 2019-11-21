@@ -29,6 +29,12 @@ function addStylesIfNeeded() {
   }
 }
 
+const footer = `
+  <div class="footer">
+    Data provided by <a href="http://identifiers.org/">Identifiers.org</a>
+  </div>
+`
+
 /**
  * initialises an existing library, called inside the web component wrapper.
  **/
@@ -49,7 +55,7 @@ function initComponent(options) {
       host.innerHTML = header + `
       <div class='loader'>
         <div class='lds-ripple'><div></div><div></div></div>
-      </div>`;
+      </div>` + footer;
 
       //1. get identifiers.org details for our given identifier
       const identifiersInfo = await getIdentifiersOrgInfo(identifier);
@@ -76,7 +82,7 @@ function initComponent(options) {
       });
       output = output + `</ul>`;
 
-      host.innerHTML = output;
+      host.innerHTML = output + footer;
     }
   }
 }
