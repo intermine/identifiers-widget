@@ -37,23 +37,27 @@ function initComponent(options) {
     get: (host, v) => v, // required to be recognized as property descriptor,
     set: () => {}, //required to stop TypeError: setting getter-only property "x"
     connect: async (host, key) => {
+      //leave this line here. Deleting it will result in your css going AWOL.
+      addStylesIfNeeded();
 
-      var identifier = host.getAttribute("identifier");
+      //0. show a loader while we fetch things
+      const identifier = host.getAttribute("identifier");
+      var header = `
+      <h1>${identifier}</h1>
+      <h2>Loading results...</h2>
+      `;
+      host.innerHTML = header + "<div class='lds-ripple'><div></div><div></div></div>";
 
-      //1. get identifiers.org details for the
+      //1. get identifiers.org details for our given identifier
       const identifiersInfo = await getIdentifiersOrgInfo(identifier);
       console.log(identifiersInfo);
-
-      //2. define some of the output elements we need
-      const localId = identifiersInfo.payload.parsedCompactIdentifier.localId;
       const resolvedResources = identifiersInfo.payload.resolvedResources;
+      const localId = identifiersInfo.payload.parsedCompactIdentifier.localId;
 
       //3. build visual output for each element
-      var output = `
-        <h1>
-          ${localId}
-        </h1>
-        <ul class="identifier-list">`;
+      header = `<h1>${localId}</h1>`;
+
+      var output = header + `<ul class="identifier-list">`;
 
       resolvedResources.map(function(resource){
         var className = "secondary";
@@ -70,9 +74,6 @@ function initComponent(options) {
       output = output + `</ul>`;
 
       host.innerHTML = output;
-
-      //leave this line here. Deleting it will result in your css going AWOL.
-      addStylesIfNeeded();
     }
   }
 }
