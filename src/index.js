@@ -40,15 +40,36 @@ function initComponent(options) {
 
       var identifier = host.getAttribute("identifier");
 
-      //1. get identifiers.org response for the geneid
+      //1. get identifiers.org details for the
       const identifiersInfo = await getIdentifiersOrgInfo(identifier);
-      console.log(JSON.stringify(identifiersInfo));
+      console.log(identifiersInfo);
 
-      //2. output
+      //2. define some of the output elements we need
+      const localId = identifiersInfo.payload.parsedCompactIdentifier.localId;
+      const resolvedResources = identifiersInfo.payload.resolvedResources;
 
+      //3. build visual output for each element
+      var output = `
+        <h1>
+          ${localId}
+        </h1>
+        <ul class="identifier-list">`;
 
-      host.innerHTML = "<div>A placeholder for a pretty" +
-        " visualisation for " + identifier + ".</div>";
+      resolvedResources.map(function(resource){
+        var className = "secondary";
+        if (resource.official) {
+          className = "primary";
+        }
+        output = output + `
+          <li class="${className}">
+            <a href="${resource.compactIdentifierResolvedUrl}">
+              ${resource.description}
+            </a>
+          </li>`;
+      });
+      output = output + `</ul>`;
+
+      host.innerHTML = output;
 
       //leave this line here. Deleting it will result in your css going AWOL.
       addStylesIfNeeded();
@@ -62,8 +83,7 @@ async function getIdentifiersOrgInfo(myIdentifier) {
 }
 
 /**
- * This is where we place the bulk of the code, wrapping an existing BioJS component
- * or where we might initialise a component written from scratch. Needs to be
+ * This is where we get started. Needs to be
  * paired with a `define` method call - see end of the page.
  **/
 export const IdentifiersWidget = {
