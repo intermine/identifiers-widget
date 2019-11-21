@@ -60,6 +60,9 @@ function initComponent(options) {
       //1. get identifiers.org details for our given identifier
       const identifiersInfo = await getIdentifiersOrgInfo(identifier);
       console.log(identifiersInfo);
+      if (identifiersInfo.errorMessage) {
+        handleError(identifiersInfo.errorMessage, host);
+      } else {
       const resolvedResources = identifiersInfo.payload.resolvedResources;
       const localId = identifiersInfo.payload.parsedCompactIdentifier.localId;
 
@@ -68,7 +71,7 @@ function initComponent(options) {
 
       var output = header + `<ul class="identifier-list">`;
 
-      resolvedResources.map(function(resource){
+      resolvedResources.map(function(resource) {
         var className = "secondary";
         if (resource.official) {
           className = "primary";
@@ -85,6 +88,13 @@ function initComponent(options) {
       host.innerHTML = output + footer;
     }
   }
+}
+}
+
+function handleError(errorMessage, host) {
+  console.error("😭 problem loading data:", errorMessage);
+  console.log(host);
+  host.querySelector('.loader').innerHTML = "Error loading data: " + errorMessage;
 }
 
 async function getIdentifiersOrgInfo(myIdentifier) {

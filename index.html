@@ -50,9 +50,10 @@
 <body class="demo">
   <h1>Identifiers Widget Visualization</h1>
 
-  <!-- the geneId param below can be removed if needed - it's just an example of
-       how to pass values to the component's JS behaviours. -->
-  <identifiers-widget identifier="fb:FBgn0004053" class="IdentifiersWidget"></identifiers-widget>
+  <!-- good use case-->
+  <identifiers-widget identifier="uniprot:P99999" class="IdentifiersWidget"></identifiers-widget>
+  <!-- error use case - bad identifier, but should work for other errors too.-->
+  <identifiers-widget identifier="ASDASDASD" class="IdentifiersWidget"></identifiers-widget>
 
 </body>
 
