@@ -36,16 +36,19 @@ const footer = `
 `
 
 // resolve the id based on the input in the URL or the default in the code
+//allowUrlFromWindow prevents accidental vulnerability from url param injection
 function resolveIdentifier(host) {
   const theDefault = host.getAttribute("identifier");
+  const allowUrlFromWindow = host.getAttribute("allowUrlFromWindow");
   const theUrl = window.location.search;
   var searchTerm;
-  if (theUrl) {
+  console.log(allowUrlFromWindow);
+  if (theUrl && allowUrlFromWindow == "true") {
     searchTerm = theUrl.split("=")[1];
     return searchTerm;
   } else {
-  return theDefault;
-}
+    return theDefault;
+  }
 }
 
 /**
@@ -77,37 +80,37 @@ function initComponent(options) {
       if (identifiersInfo.errorMessage) {
         handleError(identifiersInfo.errorMessage, host);
       } else {
-      const resolvedResources = identifiersInfo.payload.resolvedResources;
-      const localId = identifiersInfo.payload.parsedCompactIdentifier.localId;
+        const resolvedResources = identifiersInfo.payload.resolvedResources;
+        const localId = identifiersInfo.payload.parsedCompactIdentifier.localId;
 
-      //3. build visual output for each element
-      header = `<h1>${localId}</h1>`;
+        //3. build visual output for each element
+        header = `<h1>${localId}</h1>`;
 
-      var output = header + `<ul class="identifier-list">`;
+        var output = header + `<ul class="identifier-list">`;
 
-      resolvedResources.map(function(resource) {
-        var className = "secondary";
-        if (resource.official) {
-          className = "primary";
-        }
-        output = output + `
+        resolvedResources.map(function(resource) {
+          var className = "secondary";
+          if (resource.official) {
+            className = "primary";
+          }
+          output = output + `
           <li class="${className}">
             <a href="${resource.compactIdentifierResolvedUrl}">
               ${resource.description}
             </a>
           </li>`;
-      });
-      output = output + `</ul>`;
+        });
+        output = output + `</ul>`;
 
-      host.innerHTML = output + footer;
+        host.innerHTML = output + footer;
+      }
     }
   }
-}
 }
 
 function handleError(errorMessage, host) {
   console.error("😭 problem loading data:", errorMessage);
-  console.log(host);
+  host.querySelector('h2').innerHTML = "😢 Error loading";
   host.querySelector('.loader').innerHTML = "Error loading data: " + errorMessage;
 }
 
@@ -115,16 +118,6 @@ async function getIdentifiersOrgInfo(myIdentifier) {
   const response = await fetch('https://resolver.api.identifiers.org/' + myIdentifier);
   return await response.json();
 }
-
-// const customIdForm = document.getElementById("customId"),
-//   defaultWidget = document.getElementById("defaultWidget");
-//   var newId;
-// customIdForm.addEventListener("submit", function(event) {
-//   //event.preventDefault();
-//   newId = event.target[0].value;
-//   defaultWidget.setAttribute("identifier",newId);
-//   defaultWidget.init();
-// });
 
 /**
  * This is where we get started. Needs to be
