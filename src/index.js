@@ -35,6 +35,19 @@ const footer = `
   </div>
 `
 
+// resolve the id based on the input in the URL or the default in the code
+function resolveIdentifier(host) {
+  const theDefault = host.getAttribute("identifier");
+  const theUrl = window.location.search;
+  var searchTerm;
+  if (theUrl) {
+    searchTerm = theUrl.split("=")[1];
+    return searchTerm;
+  } else {
+  return theDefault;
+}
+}
+
 /**
  * initialises an existing library, called inside the web component wrapper.
  **/
@@ -47,7 +60,8 @@ function initComponent(options) {
       addStylesIfNeeded();
 
       //0. show a loader while we fetch things
-      const identifier = host.getAttribute("identifier");
+      const identifier = resolveIdentifier(host);
+
       var header = `
       <h1>${identifier}</h1>
       <h2>Loading results...</h2>
@@ -101,6 +115,16 @@ async function getIdentifiersOrgInfo(myIdentifier) {
   const response = await fetch('https://resolver.api.identifiers.org/' + myIdentifier);
   return await response.json();
 }
+
+// const customIdForm = document.getElementById("customId"),
+//   defaultWidget = document.getElementById("defaultWidget");
+//   var newId;
+// customIdForm.addEventListener("submit", function(event) {
+//   //event.preventDefault();
+//   newId = event.target[0].value;
+//   defaultWidget.setAttribute("identifier",newId);
+//   defaultWidget.init();
+// });
 
 /**
  * This is where we get started. Needs to be
