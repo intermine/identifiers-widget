@@ -36,7 +36,7 @@ const footer = `
 `
 
 // resolve the id based on the input in the URL or the default in the code
-//allowUrlFromWindow prevents accidental vulnerability from url param injection
+// allowUrlFromWindow prevents accidental vulnerability from url param injection
 function resolveIdentifier(host) {
   const theDefault = host.getAttribute("identifier");
   const allowUrlFromWindow = host.getAttribute("allowUrlFromWindow");
