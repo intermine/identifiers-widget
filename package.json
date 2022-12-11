@@ -27,7 +27,7 @@
     "@babel/preset-env": "^7.4.5",
     "babel-loader": "^8.0.6",
     "css-loader": "^2.1.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "hybrids": "^3.0.2",
     "less": "^3.9.0",
     "less-plugin-clean-css": "^1.5.1",
